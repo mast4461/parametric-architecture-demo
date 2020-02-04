@@ -52,11 +52,15 @@ class App extends React.Component {
     app.scene.ambientLight = new pc.Color(0.5, 0.5, 0.5, 1);
   }
 
+  draw() {
+    console.log("draw");
+  }
+
   render() {
     return (
       <div className="App">
         <canvas ref="canvas"></canvas>
-        <ControlPanel></ControlPanel>
+        <ControlPanel onInput={this.draw.bind(this)}></ControlPanel>
       </div>
     );
   }
