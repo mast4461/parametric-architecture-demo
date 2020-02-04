@@ -57,9 +57,13 @@ class App extends React.Component {
   draw(controlValues: any) {
     this.builderRoot.children.forEach(destroySubtree);
 
+    const mainColorMaterial = new pc.StandardMaterial();
+    mainColorMaterial.diffuse = new pc.Color().fromString(controlValues.mainColor);
+
     const cube = new pc.Entity('cube');
     cube.addComponent('model', {
-        type: 'box'
+        type: 'box',
+        material: mainColorMaterial,
     });
     cube.setLocalScale(controlValues.width, controlValues.height, controlValues.depth);
     this.builderRoot.addChild(cube);

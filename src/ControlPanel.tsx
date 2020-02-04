@@ -26,7 +26,16 @@ const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
     step: 0.01,
     defaultValue: 1,
   },
+  mainColor: {
+    type: "color",
+    defaultValue: "#8471ff",
+  }
 };
+
+const getters: {[type: string]: (el: HTMLInputElement) => any} = {
+  range: el => el.valueAsNumber,
+  color: el => el.value,
+}
 
 export class ControlPanel extends React.Component<ControlPanelProps> {
   private controlValues = Object.entries(controls)
@@ -36,7 +45,7 @@ export class ControlPanel extends React.Component<ControlPanelProps> {
     }, {} as {[key: string]: any});
 
   onInput(event: any) {
-    this.controlValues[event.target.id] = event.target.value;
+    this.controlValues[event.target.id] = getters[event.target.type](event.target);
 
     this.forceUpdate();
 
