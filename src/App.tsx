@@ -79,7 +79,10 @@ class App extends React.Component {
       this.builderRoot.addChild(box);
     };
 
-    mainRect.splitEvenlyX(controlValues.splitsX).forEach(drawBox);
+    const columns = mainRect.splitEvenlyX(controlValues.splitsX);
+    columns
+      .flatMap(column => column.splitEvenlyY(controlValues.splitsY))
+      .forEach(drawBox);
   }
 
   render() {

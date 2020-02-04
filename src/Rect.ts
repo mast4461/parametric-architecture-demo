@@ -22,11 +22,25 @@ export class Rect {
   public splitEvenlyX(splitCount: number): Rect[] {
     const dx = (this.x2 - this.x1) / splitCount;
     
-    return Array(splitCount).fill(this.x1).map((x1, i) => new Rect(
-      x1 + i * dx,
+    return Array(splitCount).fill(0).map((_, i) => new Rect(
+      this.x1 + i * dx,
       this.y1,
       dx,
       this.h,
+    ));
+  }
+  /**
+   * 
+   * @param splitCount integer
+   */
+  public splitEvenlyY(splitCount: number): Rect[] {
+    const dy = (this.y2 - this.y1) / splitCount;
+    
+    return Array(splitCount).fill(0).map((_, i) => new Rect(
+      this.x1,
+      this.y1 + i * dy,
+      this.w,
+      dy,
     ));
   }
 }

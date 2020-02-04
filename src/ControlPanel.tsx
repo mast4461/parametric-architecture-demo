@@ -33,6 +33,13 @@ const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
     step: 1,
     defaultValue: 1,
   },
+  splitsY: {
+    type: "range",
+    min: 1,
+    max: 10,
+    step: 1,
+    defaultValue: 1,
+  },
   mainColor: {
     type: "color",
     defaultValue: "#8471ff",
