@@ -5,6 +5,8 @@ import {initializeOrbitCameraResources, scriptNames} from './orbit-camera';
 import {ControlPanel} from './ControlPanel';
 
 class App extends React.Component {
+  private builderRoot: pc.GraphNode = new pc.GraphNode();
+
   componentDidMount() {
     var app = new pc.Application(this.refs.canvas as HTMLCanvasElement, {
       mouse: new pc.Mouse(document.body),
@@ -21,12 +23,12 @@ class App extends React.Component {
         app.resizeCanvas();
     });
 
-    // create box entity
+    app.root.addChild(this.builderRoot);
     var cube = new pc.Entity('cube');
     cube.addComponent('model', {
         type: 'box'
     });
-    app.root.addChild(cube);
+    this.builderRoot.addChild(cube);
 
     // create camera entity
     var camera = new pc.Entity('camera');
@@ -52,8 +54,15 @@ class App extends React.Component {
     app.scene.ambientLight = new pc.Color(0.5, 0.5, 0.5, 1);
   }
 
-  draw() {
-    console.log("draw");
+  draw(controlValues: any) {
+    this.builderRoot.children.forEach(destroySubtree);
+
+    const cube = new pc.Entity('cube');
+    cube.addComponent('model', {
+        type: 'box'
+    });
+    cube.setLocalScale(controlValues.width, controlValues.height, controlValues.depth);
+    this.builderRoot.addChild(cube);
   }
 
   render() {
@@ -64,6 +73,11 @@ class App extends React.Component {
       </div>
     );
   }
+}
+
+function destroySubtree(node: pc.GraphNode | pc.Entity) {
+  node.children.forEach(destroySubtree)
+  node.parent.removeChild(node);
 }
 
 export default App;
