@@ -4,6 +4,8 @@ import pc from 'playcanvas';
 import {initializeOrbitCameraResources, scriptNames} from './orbit-camera';
 import {ControlPanel, controlValues} from './ControlPanel';
 import { Rect } from './Rect';
+import Chance from 'chance';
+
 
 class App extends React.Component {
   private builderRoot: pc.GraphNode = new pc.GraphNode("builder root");
@@ -53,6 +55,7 @@ class App extends React.Component {
 
   draw(controlValues: any) {
     this.builderRoot.children.slice().forEach(destroySubtree);
+    const chance = new Chance(1337);
 
     // const mainColorMaterial = new pc.StandardMaterial();
     // mainColorMaterial.diffuse = new pc.Color().fromString(controlValues.mainColor);
@@ -68,7 +71,7 @@ class App extends React.Component {
       const box = new pc.Entity('box');
       box.addComponent('model', {
         type: 'box',
-        material: createMaterial(),
+        material: createMaterial(chance.color({format: "hex"})),
       });  
 
       box.setLocalScale(rect.w, rect.h, 0);
@@ -96,9 +99,9 @@ function destroySubtree(node: pc.Entity | pc.GraphNode) {
   }
 }
 
-function createMaterial(): pc.StandardMaterial {
+function createMaterial(hexString: string): pc.StandardMaterial {
   const material = new pc.StandardMaterial();
-  material.diffuse = new pc.Color(Math.random(), Math.random(), Math.random(), 1);
+  material.diffuse = new pc.Color().fromString(hexString);
   return material;
 }
 
