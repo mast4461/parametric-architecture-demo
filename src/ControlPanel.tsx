@@ -7,24 +7,24 @@ export interface ControlPanelProps {
 const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
   width: {
     type: "range",
-    min: 100,
-    max: 40*100,
-    step: 1,
-    defaultValue: 20*100,
+    min: 1,
+    max: 10,
+    step: 0.01,
+    defaultValue: 1,
   },
   depth: {
     type: "range",
-    min: 100,
-    max: 40*100,
-    step: 1,
-    defaultValue: 10*100,
+    min: 1,
+    max: 10,
+    step: 0.01,
+    defaultValue: 1,
   },
   height: {
     type: "range",
-    min: 100,
-    max: 30*100,
-    step: 1,
-    defaultValue: 12*100,
+    min: 1,
+    max: 10,
+    step: 0.01,
+    defaultValue: 1,
   },
 };
 
