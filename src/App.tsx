@@ -79,9 +79,9 @@ class App extends React.Component {
       this.builderRoot.addChild(box);
     };
 
-    const columns = mainRect.splitEvenlyX(controlValues.splitsX);
+    const columns = mainRect.cellsX(controlValues.cellWidth);
     columns
-      .flatMap(column => column.splitEvenlyY(controlValues.splitsY))
+      .flatMap(column => column.cellsY(controlValues.cellHeight))
       .forEach(drawBox);
   }
 

@@ -15,13 +15,9 @@ export class Rect {
     this.h = h;
   }
 
-  /**
-   * 
-   * @param splitCount integer
-   */
   public splitEvenlyX(splitCount: number): Rect[] {
     const dx = (this.x2 - this.x1) / splitCount;
-    
+
     return Array(splitCount).fill(0).map((_, i) => new Rect(
       this.x1 + i * dx,
       this.y1,
@@ -29,18 +25,25 @@ export class Rect {
       this.h,
     ));
   }
-  /**
-   * 
-   * @param splitCount integer
-   */
+
   public splitEvenlyY(splitCount: number): Rect[] {
     const dy = (this.y2 - this.y1) / splitCount;
-    
+
     return Array(splitCount).fill(0).map((_, i) => new Rect(
       this.x1,
       this.y1 + i * dy,
       this.w,
       dy,
     ));
+  }
+
+  public cellsX(maxCellSize: number): Rect[] {
+    const n = Math.ceil(this.w / maxCellSize);
+    return this.splitEvenlyX(n);
+  }
+
+  public cellsY(maxCellSize: number): Rect[] {
+    const n = Math.ceil(this.h / maxCellSize);
+    return this.splitEvenlyY(n);
   }
 }
