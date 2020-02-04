@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+body {
+  overflow: hidden;
+}
+
+.control-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999999;
+  background: white;
+}
