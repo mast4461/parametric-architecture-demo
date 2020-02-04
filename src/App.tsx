@@ -3,9 +3,12 @@ import './App.css';
 import pc from 'playcanvas';
 import {initializeOrbitCameraResources, scriptNames} from './orbit-camera';
 import {ControlPanel, controlValues} from './ControlPanel';
+import { Rect } from './Rect';
+import Chance from 'chance';
+
 
 class App extends React.Component {
-  private builderRoot: pc.GraphNode = new pc.GraphNode();
+  private builderRoot: pc.GraphNode = new pc.GraphNode("builder root");
 
   componentDidMount() {
     var app = new pc.Application(this.refs.canvas as HTMLCanvasElement, {
@@ -24,12 +27,6 @@ class App extends React.Component {
     });
 
     app.root.addChild(this.builderRoot);
-    var cube = new pc.Entity('cube');
-    cube.addComponent('model', {
-        type: 'box'
-    });
-    this.builderRoot.addChild(cube);
-
     // create camera entity
     var camera = new pc.Entity('camera');
     camera.addComponent('camera', {
@@ -57,18 +54,35 @@ class App extends React.Component {
   }
 
   draw(controlValues: any) {
-    this.builderRoot.children.forEach(destroySubtree);
+    this.builderRoot.children.slice().forEach(destroySubtree);
+    const chance = new Chance(1337);
 
-    const mainColorMaterial = new pc.StandardMaterial();
-    mainColorMaterial.diffuse = new pc.Color().fromString(controlValues.mainColor);
+    // const mainColorMaterial = new pc.StandardMaterial();
+    // mainColorMaterial.diffuse = new pc.Color().fromString(controlValues.mainColor);
 
-    const cube = new pc.Entity('cube');
-    cube.addComponent('model', {
+    const mainRect = new Rect(
+      -controlValues.width / 2,
+      -controlValues.height / 2,
+      controlValues.width,
+      controlValues.height,
+    );
+
+    const drawBox = (rect: Rect) => {
+      const box = new pc.Entity('box');
+      box.addComponent('model', {
         type: 'box',
-        material: mainColorMaterial,
-    });
-    cube.setLocalScale(controlValues.width, controlValues.height, controlValues.depth);
-    this.builderRoot.addChild(cube);
+        material: createMaterial(chance.color({format: "hex"})),
+      });  
+
+      box.setLocalScale(rect.w, rect.h, 0);
+      box.setLocalPosition(rect.x1 + rect.w / 2, rect.y1 + rect.h / 2, 0);
+      this.builderRoot.addChild(box);
+    };
+
+    const columns = mainRect.cellsX(controlValues.cellWidth);
+    columns
+      .flatMap(column => column.cellsY(controlValues.cellHeight))
+      .forEach(drawBox);
   }
 
   render() {
@@ -81,9 +95,17 @@ class App extends React.Component {
   }
 }
 
-function destroySubtree(node: pc.GraphNode | pc.Entity) {
-  node.children.forEach(destroySubtree)
-  node.parent.removeChild(node);
+function destroySubtree(node: pc.Entity | pc.GraphNode) {
+  node.children.slice().forEach(destroySubtree);
+  if (node instanceof pc.Entity) {
+    node.destroy();
+  }
+}
+
+function createMaterial(hexString: string): pc.StandardMaterial {
+  const material = new pc.StandardMaterial();
+  material.diffuse = new pc.Color().fromString(hexString);
+  return material;
 }
 
 export default App;

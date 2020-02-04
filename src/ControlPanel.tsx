@@ -12,13 +12,13 @@ const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
     step: 0.01,
     defaultValue: 1,
   },
-  depth: {
-    type: "range",
-    min: 1,
-    max: 10,
-    step: 0.01,
-    defaultValue: 1,
-  },
+  // depth: {
+  //   type: "range",
+  //   min: 1,
+  //   max: 10,
+  //   step: 0.01,
+  //   defaultValue: 1,
+  // },
   height: {
     type: "range",
     min: 1,
@@ -26,10 +26,24 @@ const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
     step: 0.01,
     defaultValue: 1,
   },
-  mainColor: {
-    type: "color",
-    defaultValue: "#8471ff",
-  }
+  cellWidth: {
+    type: "range",
+    min: 1,
+    max: 10,
+    step: 1,
+    defaultValue: 1,
+  },
+  cellHeight: {
+    type: "range",
+    min: 1,
+    max: 10,
+    step: 1,
+    defaultValue: 1,
+  },
+  // mainColor: {
+  //   type: "color",
+  //   defaultValue: "#8471ff",
+  // }
 };
 
 const getters: {[type: string]: (el: HTMLInputElement) => any} = {
