@@ -68,8 +68,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <canvas ref="canvas"></canvas>
         <ControlPanel onInput={this.draw.bind(this)}></ControlPanel>
+        <canvas ref="canvas"></canvas>
       </div>
     );
   }

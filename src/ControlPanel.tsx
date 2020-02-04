@@ -49,7 +49,7 @@ export class ControlPanel extends React.Component<ControlPanelProps> {
       <div className="control-panel">
         {Object.entries(controls).map(([controlName, options]) => {
           return (<div key={controlName}>
-            <div>{controlName} {this.controlValues[controlName]}</div>
+            <div>&nbsp;{controlName}: {this.controlValues[controlName]}</div>
             <input id={controlName} {...options} onInput={handleInput}></input>
             <hr/>
           </div>);
