@@ -26,6 +26,13 @@ const controls: {[key: string]: InputHTMLAttributes<HTMLInputElement>} = {
     step: 0.01,
     defaultValue: 1,
   },
+  splitsX: {
+    type: "range",
+    min: 1,
+    max: 10,
+    step: 1,
+    defaultValue: 1,
+  },
   mainColor: {
     type: "color",
     defaultValue: "#8471ff",
