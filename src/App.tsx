@@ -43,11 +43,12 @@ class App extends React.Component {
     orbitCamera.pitch = -20;
     orbitCamera.yaw = 30;
 
-    // create directional light entity
+    // create light
     var light = new pc.Entity('light');
     light.addComponent('light');
-    light.setEulerAngles(45, 0, 0);
+    light.setEulerAngles(40, 30, 0);
     app.root.addChild(light);
+    app.scene.ambientLight = new pc.Color(0.5, 0.5, 0.5, 1);
   }
 
   render() {
