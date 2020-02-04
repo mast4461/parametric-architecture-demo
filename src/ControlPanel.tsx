@@ -37,19 +37,20 @@ const getters: {[type: string]: (el: HTMLInputElement) => any} = {
   color: el => el.value,
 }
 
+export const controlValues = Object.entries(controls)
+  .reduce((acc, [controlName, options]) => {
+    acc[controlName] = options.defaultValue;
+    return acc;
+  }, {} as {[key: string]: any});
+
 export class ControlPanel extends React.Component<ControlPanelProps> {
-  private controlValues = Object.entries(controls)
-    .reduce((acc, [controlName, options]) => {
-      acc[controlName] = options.defaultValue;
-      return acc;
-    }, {} as {[key: string]: any});
 
   onInput(event: any) {
-    this.controlValues[event.target.id] = getters[event.target.type](event.target);
+    controlValues[event.target.id] = getters[event.target.type](event.target);
 
     this.forceUpdate();
 
-    this.props.onInput(this.controlValues);
+    this.props.onInput(controlValues);
   }
 
   render() {
@@ -58,7 +59,7 @@ export class ControlPanel extends React.Component<ControlPanelProps> {
       <div className="control-panel">
         {Object.entries(controls).map(([controlName, options]) => {
           return (<div key={controlName}>
-            <div>&nbsp;{controlName}: {this.controlValues[controlName]}</div>
+            <div>&nbsp;{controlName}: {controlValues[controlName]}</div>
             <input id={controlName} {...options} onInput={handleInput}></input>
             <hr/>
           </div>);

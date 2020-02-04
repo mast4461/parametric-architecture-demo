@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import pc from 'playcanvas';
 import {initializeOrbitCameraResources, scriptNames} from './orbit-camera';
-import {ControlPanel} from './ControlPanel';
+import {ControlPanel, controlValues} from './ControlPanel';
 
 class App extends React.Component {
   private builderRoot: pc.GraphNode = new pc.GraphNode();
@@ -52,6 +52,8 @@ class App extends React.Component {
     light.setEulerAngles(40, 30, 0);
     app.root.addChild(light);
     app.scene.ambientLight = new pc.Color(0.5, 0.5, 0.5, 1);
+
+    this.draw(controlValues);
   }
 
   draw(controlValues: any) {
