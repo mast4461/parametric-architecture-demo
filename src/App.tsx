@@ -1,10 +1,14 @@
 import React from 'react';
 import './App.css';
 import pc from 'playcanvas';
+import {initializeOrbitCameraResources, scriptNames} from './orbit-camera';
 
 class App extends React.Component {
   componentDidMount() {
-    var app = new pc.Application(this.refs.canvas as HTMLCanvasElement, { });
+    var app = new pc.Application(this.refs.canvas as HTMLCanvasElement, {
+      mouse: new pc.Mouse(document.body),
+      touch: new pc.TouchDevice(document.body)
+    });
     app.start();
 
     // fill the available space at full resolution
@@ -21,30 +25,29 @@ class App extends React.Component {
     cube.addComponent('model', {
         type: 'box'
     });
+    app.root.addChild(cube);
 
     // create camera entity
     var camera = new pc.Entity('camera');
     camera.addComponent('camera', {
         clearColor: new pc.Color(0.1, 0.1, 0.1)
     });
+    app.root.addChild(camera);
+
+    initializeOrbitCameraResources();
+    const cameraScriptComponent = camera.addComponent("script") as pc.ScriptComponent;
+    const orbitCamera: any = cameraScriptComponent.create(scriptNames.OrbitCamera);
+    cameraScriptComponent.create(scriptNames.OrbitCameraInputMouse);
+    cameraScriptComponent.create(scriptNames.OrbitCameraInputTouch);
+    orbitCamera.distance = 10;
+    orbitCamera.pitch = -20;
+    orbitCamera.yaw = 30;
 
     // create directional light entity
     var light = new pc.Entity('light');
     light.addComponent('light');
-
-    // add to hierarchy
-    app.root.addChild(cube);
-    app.root.addChild(camera);
-    app.root.addChild(light);
-
-    // set up initial positions and orientations
-    camera.setPosition(0, 0, 3);
     light.setEulerAngles(45, 0, 0);
-
-    // register a global update event
-    app.on('update', function (deltaTime) {
-        cube.rotate(10 * deltaTime, 20 * deltaTime, 30 * deltaTime);
-    });
+    app.root.addChild(light);
   }
 
   render() {
