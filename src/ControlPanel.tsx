@@ -29,6 +29,11 @@ const controls = {
 
 type ControlName = keyof typeof controls;
 
+export const controlValues = Object.entries(controls).reduce((acc, [controlName, {defaultValue}]) => {
+    acc[controlName] = defaultValue;
+    return acc;  
+  }, {} as any) as Record<ControlName, any>;
+
 export default class ControlPanel extends React.Component {
   handleInput(event: any) {
     const el = event.target as HTMLInputElement;
