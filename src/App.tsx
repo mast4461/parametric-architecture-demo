@@ -3,6 +3,7 @@
 import React from 'react';
 import './App.css';
 import pc from "playcanvas";
+import { initializeOrbitCamera } from './lib/orbit-camera';
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -45,10 +46,7 @@ export default class App extends React.Component {
     camera.setPosition(0, 0, 3);
     light.setEulerAngles(45, 0, 0);
 
-    // register a global update event
-    app.on('update', function (deltaTime: number) {
-        cube.rotate(10 * deltaTime, 20 * deltaTime, 30 * deltaTime);
-    });
+    initializeOrbitCamera(app, camera);
   }
 
   render() {
