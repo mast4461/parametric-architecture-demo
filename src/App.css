@@ -47,3 +47,10 @@
 body {
   overflow: hidden;
 }
+
+.control-widget header {
+  text-align: left;
+  font-family: monospace;
+  font-size: 1.3em;
+  padding: 5pt;
+}

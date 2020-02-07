@@ -37,7 +37,8 @@ export const controlValues = Object.entries(controls).reduce((acc, [controlName,
 export default class ControlPanel extends React.Component {
   handleInput(event: any) {
     const el = event.target as HTMLInputElement;
-    console.log(el.id, el.value);
+    controlValues[el.id as ControlName] = el.value;
+    this.forceUpdate();
   };
 
   render() {
@@ -45,8 +46,8 @@ export default class ControlPanel extends React.Component {
     return (
       <div id="control-panel">
         {Object.entries(controls).map(([controlName, options]) => (
-          <div key={controlName}>
-            <div>{controlName}</div>
+          <div key={controlName} className="control-widget">
+            <header>{controlName}: {controlValues[controlName as ControlName]}</header>
             <input {...options} id={controlName} onInput={handleInput}/>
             <hr/>
           </div>
