@@ -30,7 +30,7 @@ export default class App extends React.Component {
     // create camera entity
     const camera = new pc.Entity('camera');
     camera.addComponent('camera', {
-        clearColor: new pc.Color(0.1, 0.1, 0.1)
+        clearColor: new pc.Color(0.4, 0.4, 0.4)
     });
 
     // create directional light entity
@@ -44,7 +44,9 @@ export default class App extends React.Component {
 
     // set up initial positions and orientations
     camera.setPosition(0, 0, 3);
-    light.setEulerAngles(45, 0, 0);
+    light.setEulerAngles(45, 30, 0);
+
+    app.scene.ambientLight = new pc.Color(0.3, 0.3, 0.3);
 
     initializeOrbitCamera(app, camera);
   }
