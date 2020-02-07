@@ -18,6 +18,13 @@ const controls = {
     step: 0.01,
     defaultValue: 1,
   }),
+  depth: t({
+    type: "range",
+    min: 1,
+    max: 10,
+    step: 0.01,
+    defaultValue: 1,
+  }),
   color: t({
     type: "color",
     min: 1,

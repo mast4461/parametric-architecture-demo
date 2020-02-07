@@ -55,7 +55,9 @@ export default class App extends React.Component {
 
     app.scene.ambientLight = new pc.Color(0.3, 0.3, 0.3);
 
-    initializeOrbitCamera(app, camera);
+    initializeOrbitCamera(app, camera, {
+      distance: 10,
+    });
     this.draw();
   }
 
@@ -64,7 +66,7 @@ export default class App extends React.Component {
       throw new Error("Cube or cubematerial is missing");
     }
 
-    this.cube.setLocalScale(controlValues.width, controlValues.height, 1);
+    this.cube.setLocalScale(controlValues.width, controlValues.height, controlValues.depth);
 
     this.cubeMaterial.diffuse = new pc.Color().fromString(controlValues.color);
     this.cubeMaterial.update();
