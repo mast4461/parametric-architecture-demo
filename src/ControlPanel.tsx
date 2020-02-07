@@ -33,14 +33,13 @@ export default class ControlPanel extends React.Component {
   render() {
     return (
       <div id="control-panel">
-        <div>
-          <input type="range"/>
-          <hr/>
-        </div>
-        <div>
-          <input type="color"/>
-          <hr/>
-        </div>
+        {Object.entries(controls).map(([controlName, options]) => (
+          <div key={controlName}>
+            <div>{controlName}</div>
+            <input {...options} id={controlName}/>
+            <hr/>
+          </div>
+        ))}
       </div>
     )
   }
