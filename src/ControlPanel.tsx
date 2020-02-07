@@ -30,13 +30,19 @@ const controls = {
 type ControlName = keyof typeof controls;
 
 export default class ControlPanel extends React.Component {
+  handleInput(event: any) {
+    const el = event.target as HTMLInputElement;
+    console.log(el.id, el.value);
+  };
+
   render() {
+    const handleInput = this.handleInput.bind(this);
     return (
       <div id="control-panel">
         {Object.entries(controls).map(([controlName, options]) => (
           <div key={controlName}>
             <div>{controlName}</div>
-            <input {...options} id={controlName}/>
+            <input {...options} id={controlName} onInput={handleInput}/>
             <hr/>
           </div>
         ))}
