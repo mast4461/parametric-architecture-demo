@@ -34,11 +34,12 @@ export const controlValues = Object.entries(controls).reduce((acc, [controlName,
     return acc;  
   }, {} as any) as Record<ControlName, any>;
 
-export default class ControlPanel extends React.Component {
+export default class ControlPanel extends React.Component<{onInput: Function}> {
   handleInput(event: any) {
     const el = event.target as HTMLInputElement;
     controlValues[el.id as ControlName] = el.value;
     this.forceUpdate();
+    this.props.onInput();
   };
 
   render() {

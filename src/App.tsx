@@ -4,9 +4,11 @@ import React from 'react';
 import './App.css';
 import pc from "playcanvas";
 import { initializeOrbitCamera } from './lib/orbit-camera';
-import ControlPanel from './ControlPanel';
+import ControlPanel, { controlValues } from './ControlPanel';
 
 export default class App extends React.Component {
+  private cube?: pc.Entity;
+
   componentDidMount() {
     // create a PlayCanvas application
     const canvas = this.refs.canvas as HTMLCanvasElement;
@@ -27,6 +29,7 @@ export default class App extends React.Component {
     cube.addComponent('model', {
         type: 'box'
     });
+    this.cube = cube;
 
     // create camera entity
     const camera = new pc.Entity('camera');
@@ -52,10 +55,19 @@ export default class App extends React.Component {
     initializeOrbitCamera(app, camera);
   }
 
+  draw() {
+    if (!this.cube) {
+      throw new Error("Cube is missing");
+    }
+
+    this.cube.setLocalScale(controlValues.width, controlValues.height, 1);
+  }
+
   render() {
+    const draw = this.draw.bind(this);
     return (
       <div className="App">
-        <ControlPanel></ControlPanel>
+        <ControlPanel onInput={draw}></ControlPanel>
         <canvas ref="canvas"></canvas>
       </div>
     )
