@@ -8,12 +8,14 @@ import ControlPanel, { controlValues } from './ControlPanel';
 
 export default class App extends React.Component {
   private cube?: pc.Entity;
+  private cubeMaterial?: pc.StandardMaterial;
 
   componentDidMount() {
     // create a PlayCanvas application
     const canvas = this.refs.canvas as HTMLCanvasElement;
     const app = new pc.Application(canvas, { });
     app.start();
+    this.cubeMaterial = app.scene.defaultMaterial.clone();
 
     // fill the available space at full resolution
     app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
@@ -27,7 +29,8 @@ export default class App extends React.Component {
     // create box entity
     const cube = new pc.Entity('cube');
     cube.addComponent('model', {
-        type: 'box'
+        type: 'box',
+        material: this.cubeMaterial,
     });
     this.cube = cube;
 
@@ -53,14 +56,18 @@ export default class App extends React.Component {
     app.scene.ambientLight = new pc.Color(0.3, 0.3, 0.3);
 
     initializeOrbitCamera(app, camera);
+    this.draw();
   }
 
   draw() {
-    if (!this.cube) {
-      throw new Error("Cube is missing");
+    if (!this.cube || !this.cubeMaterial) {
+      throw new Error("Cube or cubematerial is missing");
     }
 
     this.cube.setLocalScale(controlValues.width, controlValues.height, 1);
+
+    this.cubeMaterial.diffuse = new pc.Color().fromString(controlValues.color);
+    this.cubeMaterial.update();
   }
 
   render() {
