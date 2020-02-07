@@ -4,6 +4,7 @@ import React from 'react';
 import './App.css';
 import pc from "playcanvas";
 import { initializeOrbitCamera } from './lib/orbit-camera';
+import ControlPanel from './ControlPanel';
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -54,6 +55,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <ControlPanel></ControlPanel>
         <canvas ref="canvas"></canvas>
       </div>
     )

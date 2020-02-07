@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+#control-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: white;
+}
+
+body {
+  overflow: hidden;
+}
