@@ -7,15 +7,13 @@ import { initializeOrbitCamera } from './lib/orbit-camera';
 import ControlPanel, { controlValues } from './ControlPanel';
 
 export default class App extends React.Component {
-  private cube?: pc.Entity;
-  private cubeMaterial?: pc.StandardMaterial;
+  private builderRoot = new pc.GraphNode();
 
   componentDidMount() {
     // create a PlayCanvas application
     const canvas = this.refs.canvas as HTMLCanvasElement;
     const app = new pc.Application(canvas, { });
     app.start();
-    this.cubeMaterial = app.scene.defaultMaterial.clone();
 
     // fill the available space at full resolution
     app.setCanvasFillMode(pc.FILLMODE_FILL_WINDOW);
@@ -26,13 +24,8 @@ export default class App extends React.Component {
         app.resizeCanvas();
     });
 
-    // create box entity
-    const cube = new pc.Entity('cube');
-    cube.addComponent('model', {
-        type: 'box',
-        material: this.cubeMaterial,
-    });
-    this.cube = cube;
+    // add builder root node to app
+    app.root.addChild(this.builderRoot);
 
     // create camera entity
     const camera = new pc.Entity('camera');
@@ -45,7 +38,6 @@ export default class App extends React.Component {
     light.addComponent('light');
 
     // add to hierarchy
-    app.root.addChild(cube);
     app.root.addChild(camera);
     app.root.addChild(light);
 
@@ -62,14 +54,19 @@ export default class App extends React.Component {
   }
 
   draw() {
-    if (!this.cube || !this.cubeMaterial) {
-      throw new Error("Cube or cubematerial is missing");
-    }
+    this.builderRoot.children.slice().forEach(destroyRecursively)
 
-    this.cube.setLocalScale(controlValues.width, controlValues.height, controlValues.depth);
+    const material = new pc.StandardMaterial();
+    material.diffuse = new pc.Color().fromString(controlValues.color);
 
-    this.cubeMaterial.diffuse = new pc.Color().fromString(controlValues.color);
-    this.cubeMaterial.update();
+    const cube = new pc.Entity('cube');
+    cube.addComponent('model', {
+        type: 'box',
+        material: material,
+    });
+    cube.setLocalScale(parseFloat(controlValues.width), parseFloat(controlValues.height), parseFloat(controlValues.depth));
+
+    this.builderRoot.addChild(cube);
   }
 
   render() {
@@ -80,5 +77,14 @@ export default class App extends React.Component {
         <canvas ref="canvas"></canvas>
       </div>
     )
+  }
+}
+
+function destroyRecursively(node: pc.GraphNode | pc.Entity) {
+  node.children.slice().forEach(destroyRecursively);
+  if (node instanceof pc.Entity) {
+    node.destroy();
+  } else if (node.parent) {
+    node.parent.removeChild(node);
   }
 }
